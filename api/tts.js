@@ -1,6 +1,7 @@
 const AZURE_SPEECH_KEY = process.env.AZURE_SPEECH_KEY || ""
 const AZURE_SPEECH_REGION = process.env.AZURE_SPEECH_REGION || "eastus"
 const AZURE_TTS_VOICE = process.env.AZURE_TTS_VOICE || "en-US-JennyNeural"
+const API_TOKEN = process.env.API_TOKEN || ""
 
 let cachedToken = ""
 let cachedTokenExpiry = 0
@@ -79,7 +80,7 @@ module.exports = async (req, res) => {
     res.status(204)
     res.setHeader("Access-Control-Allow-Origin", "*")
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS")
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type")
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization")
     res.end()
     return
   }
@@ -90,6 +91,14 @@ module.exports = async (req, res) => {
   }
 
   try {
+    if (API_TOKEN) {
+      const authHeader = String(req.headers.authorization || "")
+      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : ""
+      if (token !== API_TOKEN) {
+        res.status(401).json({ error: "Unauthorized" })
+        return
+      }
+    }
     const { text, rate, voice } = req.body || {}
     const cleanText = String(text || "").trim()
     if (!cleanText) {

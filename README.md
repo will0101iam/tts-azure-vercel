@@ -7,6 +7,8 @@
 - AZURE_SPEECH_KEY：你的 Azure Speech 密钥
 - AZURE_SPEECH_REGION：区域，例如 eastus
 - AZURE_TTS_VOICE：可选，默认 en-US-JennyNeural
+- OPENROUTER_API_KEY：可选，用于翻译接口 /api/translate
+- OPENROUTER_MODEL：可选，默认 google/gemini-3.1-flash-lite-preview
 - PORT：可选，默认 8787
 
 ## Vercel 部署
@@ -17,12 +19,21 @@
    - AZURE_SPEECH_KEY
    - AZURE_SPEECH_REGION
    - AZURE_TTS_VOICE（可选）
+   - OPENROUTER_API_KEY（如需翻译）
+   - OPENROUTER_MODEL（可选）
+   - API_TOKEN（可选，开启访问鉴权）
 4. 部署完成后，Vercel 会提供域名
 
 API 地址：
 
 ```
 https://<你的项目>.vercel.app/api/tts
+```
+
+翻译接口：
+
+```
+https://<你的项目>.vercel.app/api/translate
 ```
 
 ## 启动
